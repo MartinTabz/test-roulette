@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto, Unbounded } from "next/font/google";
 import "./globals.css";
+import NotificationProvider from "@/utils/contexts/NotificationContext";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto({
+	weight: ["300", "400", "500", "700", "900"],
+	subsets: ["latin"],
+	style: ["normal"],
+	display: "swap",
+});
+
+const unbounded = Unbounded({
+	subsets: ["latin"],
+	variable: "--font-unbounded",
+	display: "swap",
+});
 
 export const metadata: Metadata = {
 	title: "Test Roulette",
@@ -16,8 +28,8 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="cs">
-			<body className={inter.className}>
-				<main>{children}</main>
+			<body className={`${roboto.className} ${unbounded.variable}`}>
+				<NotificationProvider>{children}</NotificationProvider>
 			</body>
 		</html>
 	);
