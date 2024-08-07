@@ -14,5 +14,5 @@ export default async function ProfileLayout({
 		redirect("/prihlasit");
 	}
 
-	return <main>{children}</main>;
+	return <>{children}</>;
 }

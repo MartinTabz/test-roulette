@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Roboto, Unbounded } from "next/font/google";
 import "./globals.css";
 import NotificationProvider from "@/utils/contexts/NotificationContext";
+import Navigation from "@/components/Navigation";
+import { createClient } from "@/utils/supabase/server";
+import { getUserWithProfile } from "@/utils/server-functions";
 
 const roboto = Roboto({
 	weight: ["300", "400", "500", "700", "900"],
@@ -21,15 +24,20 @@ export const metadata: Metadata = {
 	description: "Testovací webová aplikace se hrou kasína",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const supabase = createClient();
+	const user = await getUserWithProfile(supabase);
 	return (
 		<html lang="cs">
 			<body className={`${roboto.className} ${unbounded.variable}`}>
-				<NotificationProvider>{children}</NotificationProvider>
+				<NotificationProvider>
+					<Navigation user={user} />
+					<main>{children}</main>
+				</NotificationProvider>
 			</body>
 		</html>
 	);
