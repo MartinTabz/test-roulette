@@ -32,10 +32,21 @@ export async function POST(req: Request) {
 						obj.id
 					);
 
+					const { data: profile } = await supabase
+						.from("profiles")
+						.select("balance")
+						.eq("id", obj.client_reference_id)
+						.single();
+
+					if (!profile || !profile.balance) {
+						console.log(`Client reference ID: ${obj.client_reference_id}`);
+						throw new Error("Nebyl nalezen profil");
+					}
+
 					const { error } = await supabase
 						.from("profiles")
 						.update({
-							balance: lineItems.data[0].amount_total,
+							balance: profile.balance + lineItems.data[0].amount_total,
 						})
 						.eq("id", obj.client_reference_id)
 						.select()
