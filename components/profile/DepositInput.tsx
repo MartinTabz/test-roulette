@@ -61,7 +61,7 @@ export default function DepositInput({ state }: { state: "zruseno" | null }) {
 			<Button
 				onClick={handleDeposit}
 				disabled={isLoading}
-				className="bg-green-500 text-base hover:bg-green-900 text-white"
+				className="bg-green-500 text-base hover:bg-green-900 text-white duration-200 ease-in-out"
 			>
 				{isLoading ? <FiLoader className="text-lg animate-spin" /> : "Vložit"}
 			</Button>

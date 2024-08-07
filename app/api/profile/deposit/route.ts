@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { stripe } from "@/utils/stripe/config";
 import Stripe from "stripe";
 import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
 
 interface SessionSettings {
 	payment_method_types: Stripe.Checkout.SessionCreateParams.PaymentMethodType[];
@@ -76,6 +77,11 @@ export async function GET(req: NextRequest) {
 	};
 
 	const { url } = await stripe.checkout.sessions.create(sessionSettings);
+
+	const tenMinutes = 10 * 60 * 1000;
+	cookies().set("depositsuccess", "true", {
+		expires: Date.now() + tenMinutes,
+	});
 
 	return sendResponse(null, url, 200);
 }
